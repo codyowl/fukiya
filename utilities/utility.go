@@ -22,3 +22,7 @@ func IsKubePresent() bool{
 	return strings.Contains(string(output),"Client Version:")
 }
 
+// helper function to set the pod monitor configuration
+func SetConfig(){
+
+}
