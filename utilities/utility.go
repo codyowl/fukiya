@@ -7,12 +7,15 @@ import (
 )
 
 const (
-	kubectlVersionCommand = " kubectl version"
+	kubectlCmd = "kubectl" 
 )
+
+// kubectl sub commands
+var VersionCmd = []string{"version", "--client"}
 
 // helper function to check if kubectl present in your system or not
 func IsKubePresent() bool{
-	kubectlVersionCommandExec := exec.Command(kubectlVersionCommand)
+	kubectlVersionCommandExec := exec.Command(kubectlCmd, VersionCmd...)
 	output, err := kubectlVersionCommandExec.Output()
 	
 	if err != nil {
