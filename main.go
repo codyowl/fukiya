@@ -2,9 +2,12 @@ package main
 
 import (
 	"fmt"
+	"context"
 	"fukiya/utilities"
 	"fukiya/cli"
 	"github.com/spf13/cobra"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 )
 
 // cobra root command
@@ -21,7 +24,23 @@ func main(){
 	if utilities.IsKubePresent(){
 		fmt.Println("Yes kubectl is present")
 		
-		// 
+		
+		// testing kube go client
+		kubeClientset, err := utilities.GetKubeConfig()
+		if err != nil {
+			fmt.Println("FAILED TO LOAD KUBECONFIG: %v", err)
+		}
+
+		// getting pod details for default namespace for now
+		pods, err := kubeClientset.CoreV1().Pods("default").List(context.TODO(), metav1.ListOptions{})
+		if err != nil {
+			fmt.Println("FAILED TO GET PODS: %v", err)		
+		}
+
+		for _, pod := range pods.Items {
+			fmt.Println("fetched pod name:", pod.Name)
+		}
+
 		if err := cobrarootCmd.Execute(); err != nil {
 			fmt.Println(err)
 		}
