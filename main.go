@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"context"
 	"fukiya/utilities"
+	"fukiya/k8s_go_client"
 	"fukiya/cli"
 	"github.com/spf13/cobra"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,7 +27,7 @@ func main(){
 		
 		
 		// testing kube go client
-		kubeClientset, err := utilities.GetKubeConfig()
+		kubeClientset, err := k8s_go_client.GetKubeConfig()
 		if err != nil {
 			fmt.Println("FAILED TO LOAD KUBECONFIG: %v", err)
 		}
@@ -36,6 +37,10 @@ func main(){
 		if err != nil {
 			fmt.Println("FAILED TO GET PODS: %v", err)		
 		}
+
+		// checking pod status
+		fmt.Println("Checking pod status master bruce ")
+		k8s_go_client.GetPodsStatus(kubeClientset)
 
 		for _, pod := range pods.Items {
 			fmt.Println("fetched pod name:", pod.Name)

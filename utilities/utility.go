@@ -4,9 +4,7 @@ import (
 	"os/exec"
 	"strings"
 	"fmt"
-	"path/filepath"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
+	v1 "k8s.io/api/core/v1"
 )
 
 const (
@@ -30,29 +28,8 @@ func IsKubePresent() bool{
 }
 
 
-// helper function to get kubeconfig out of kubeconfig path
-func GetKubeConfig()(*kubernetes.Clientset, error){
-	kubeconfig := filepath.Join(homeDir(), ".kube", "config")
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
-	if err != nil {
-		return nil, fmt.Errorf("error loading kubeconfig: %v", err)
-	}
 
-	// creating the kube clientset
-	kubeclient, err := kubernetes.NewForConfig(config)
-	if err != nil {
-		return nil, fmt.Errorf("error loading kube client: %v", err)
-	}
-
-	return kubeclient, nil
-} 
-
-// helper function to get home dir
-func homeDir() string {
-	return "/root"
-}
-
-// helper function to set the pod monitor configuration
-func SetConfig(){
-
+// helper function to send email
+func SendEmailAlert(pod *v1.Pod){
+	fmt.Printf("sending email alert: Pod %s belongs to the namespace %s is down!\n", pod.Name, pod.Namespace)
 }
