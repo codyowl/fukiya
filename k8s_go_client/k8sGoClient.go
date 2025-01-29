@@ -50,6 +50,10 @@ func GetPodsStatus(kubeclient *kubernetes.Clientset){
 				checkPodStatus(pod)
 		},
 	})
+
+	// starting the informer
+	fmt.Println("Starting Get pod status informer")
+	informer.Run(stopper)
 }
 
 
