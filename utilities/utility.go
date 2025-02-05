@@ -4,6 +4,8 @@ import (
 	"os/exec"
 	"strings"
 	"fmt"
+	"os"
+	"syscall"
 	v1 "k8s.io/api/core/v1"
 )
 
@@ -13,6 +15,20 @@ const (
 
 // kubectl sub commands
 var VersionCmd = []string{"version", "--client"}
+
+
+// helper function to run the process in detached mode
+func RunInBackground(){
+	cmd := exec.Command(os.Args[0], "monitor")
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
+	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+
+	err := cmd.Start()
+	if err != nil {
+		fmt.Println("Failed to start monitoring :", err)
+	}
+	// need to store the triggered time
+}
 
 // helper function to check if kubectl present in your system or not
 func IsKubePresent() bool{
