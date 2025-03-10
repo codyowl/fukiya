@@ -23,6 +23,15 @@ func WatchCmd() *cobra.Command {
 }
 
 // function to config email and phone 
-func Config(){
-
+func EmailSetupCmd() *cobra.Command{
+	return &cobra.Command{
+		Use:   "email-setup",
+		Short: "email notifications setup for pod monitoring alerts",
+		Run: func(cmd *cobra.Command, args []string) {
+			err := utilities.ConfigureEmail()
+			if err != nil {
+				fmt.Println("❌ Email setup failed:", err)
+			}
+		},
+	}
 }
